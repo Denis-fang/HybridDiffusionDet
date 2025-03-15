@@ -33,12 +33,64 @@ python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 
 ## 数据准备
 
+### 自动下载COCO数据集
+
 ```bash
-# 下载COCO数据集
+# 使用脚本下载COCO数据集
 bash scripts/download_coco.sh
 
-# 准备数据集
-python tools/prepare_dataset.py --dataset coco --data-path data/coco
+# 或者使用Python脚本准备数据集
+python tools/prepare_dataset.py --dataset coco --data-path data
+```
+
+### 手动下载COCO数据集
+
+如果自动下载脚本不工作，您可以手动下载COCO 2017数据集：
+
+1. 创建数据目录：`mkdir -p data/coco`
+2. 下载以下文件：
+   - 训练集图像：[train2017.zip](http://images.cocodataset.org/zips/train2017.zip)
+   - 验证集图像：[val2017.zip](http://images.cocodataset.org/zips/val2017.zip)
+   - 标注文件：[annotations_trainval2017.zip](http://images.cocodataset.org/annotations/annotations_trainval2017.zip)
+3. 解压文件到`data/coco`目录：
+   ```bash
+   unzip train2017.zip -d data/coco/
+   unzip val2017.zip -d data/coco/
+   unzip annotations_trainval2017.zip -d data/coco/
+   ```
+
+最终的目录结构应该如下：
+```
+data/
+└── coco/
+    ├── annotations/
+    │   ├── instances_train2017.json
+    │   ├── instances_val2017.json
+    │   └── ...
+    ├── train2017/
+    │   ├── 000000000009.jpg
+    │   └── ...
+    └── val2017/
+        ├── 000000000139.jpg
+        └── ...
+```
+
+### 下载YOLOv8预训练模型
+
+```bash
+# 使用脚本下载YOLOv8预训练权重
+bash scripts/download_yolo_weights.sh
+```
+
+您也可以从[Ultralytics GitHub仓库](https://github.com/ultralytics/assets/releases/tag/v0.0.0)手动下载YOLOv8预训练模型，并将它们放在`weights`目录中：
+
+```
+weights/
+├── yolov8n.pt  # YOLOv8 nano
+├── yolov8s.pt  # YOLOv8 small
+├── yolov8m.pt  # YOLOv8 medium
+├── yolov8l.pt  # YOLOv8 large
+└── yolov8x.pt  # YOLOv8 xlarge
 ```
 
 ## 训练
