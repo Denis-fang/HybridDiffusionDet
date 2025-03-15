@@ -83,4 +83,128 @@ python tools/inference.py --config configs/hybrid_diffusion_det.yaml --checkpoin
 
 ## 许可证
 
-本项目采用 [MIT 许可证](LICENSE)。 # HybridDiffusionDet
+本项目采用 [MIT 许可证](LICENSE)。
+
+# 数据集处理工具集
+
+这个工具集提供了一系列用于处理目标检测数据集的实用工具，包括数据集准备、格式转换、可视化、分析和分割等功能。
+
+## 工具列表
+
+### 1. 数据集准备工具 (prepare_dataset.py)
+
+用于下载和准备常用的目标检测数据集，如COCO、CrowdHuman和VisDrone。
+
+**用法:**
+```bash
+python tools/prepare_dataset.py --dataset coco --data-path ./data
+```
+
+**参数:**
+- `--dataset`: 要准备的数据集名称，可选值: coco, crowdhuman, visdrone, all
+- `--data-path`: 数据集保存路径
+
+### 2. 数据集格式转换工具 (convert_dataset.py)
+
+将不同格式的数据集（如VOC、YOLO、VisDrone、CrowdHuman）转换为COCO格式。
+
+**用法:**
+```bash
+python tools/convert_dataset.py --source-format voc --source-dir ./data/VOCdevkit/VOC2012 --output-dir ./data/coco_converted
+```
+
+**参数:**
+- `--source-format`: 源数据集格式，可选值: voc, yolo, visdrone, crowdhuman
+- `--source-dir`: 源数据集目录
+- `--output-dir`: 输出目录
+- `--class-names-file`: 类别名称文件（仅YOLO格式需要）
+
+### 3. 数据集可视化工具 (visualize_dataset.py)
+
+可视化COCO格式数据集的标注。
+
+**用法:**
+```bash
+python tools/visualize_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --images-dir ./data/coco/train2017 --output-dir ./visualization
+```
+
+**参数:**
+- `--coco-json`: COCO格式标注文件路径
+- `--images-dir`: 图像目录路径
+- `--output-dir`: 可视化结果输出目录
+- `--num-samples`: 要可视化的样本数量，默认为全部
+- `--no-labels`: 不显示类别标签
+
+### 4. 数据集分析工具 (analyze_dataset.py)
+
+分析COCO格式数据集的统计信息，包括类别分布、边界框大小分布等。
+
+**用法:**
+```bash
+python tools/analyze_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --output-dir ./analysis
+```
+
+**参数:**
+- `--coco-json`: COCO格式标注文件路径
+- `--output-dir`: 分析结果输出目录
+
+### 5. 数据集分割工具 (split_dataset.py)
+
+将COCO格式数据集分割为训练集和验证集。
+
+**用法:**
+```bash
+python tools/split_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --images-dir ./data/coco/train2017 --output-dir ./data/coco_split
+```
+
+**参数:**
+- `--coco-json`: COCO格式标注文件路径
+- `--images-dir`: 图像目录路径
+- `--output-dir`: 输出目录
+- `--train-ratio`: 训练集比例，默认为0.8
+- `--seed`: 随机种子，默认为42
+- `--category`: 按类别分割数据集，指定类别名称
+
+## 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+## 示例
+
+### 准备COCO数据集
+
+```bash
+python tools/prepare_dataset.py --dataset coco --data-path ./data
+```
+
+### 将VOC格式转换为COCO格式
+
+```bash
+python tools/convert_dataset.py --source-format voc --source-dir ./data/VOCdevkit/VOC2012 --output-dir ./data/coco_converted
+```
+
+### 可视化COCO数据集
+
+```bash
+python tools/visualize_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --images-dir ./data/coco/train2017 --output-dir ./visualization --num-samples 100
+```
+
+### 分析COCO数据集
+
+```bash
+python tools/analyze_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --output-dir ./analysis
+```
+
+### 分割COCO数据集
+
+```bash
+python tools/split_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --images-dir ./data/coco/train2017 --output-dir ./data/coco_split --train-ratio 0.8
+```
+
+### 按类别分割COCO数据集
+
+```bash
+python tools/split_dataset.py --coco-json ./data/coco/annotations/instances_train2017.json --images-dir ./data/coco/train2017 --output-dir ./data/coco_split_person --category person
+``` 
